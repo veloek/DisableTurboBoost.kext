@@ -1,6 +1,6 @@
 # DisableTurboBoost
 
-A MacOS kernel extension (kext) for disabling CPU turbo boost to keep temperature (and fan noise) down.
+A macOS kernel extension (kext) for disabling CPU turbo boost to keep temperature (and fan noise) down.
 
 ## Usage
 
@@ -18,11 +18,13 @@ sudo kextload DisableTurboBoost.kext
 
 Run `kextstat |grep DisableTurboBoost` to verify that it's loaded.
 
+Run `sudo kextunload -b no.vtek.DisableTurboBoost` to unload the kext.
+
 ## How it works
 
-This small kernel extension will enable bit 32 of the MSR register `MSR_IA32_PERF_CTL`. This causes the CPU to disable turbo boost, while keeping speed step.
+This small kernel extension will enable bit 38 of the MSR register `MSR_IA32_MISC_ENABLE` which causes the CPU to disable turbo boost.
 
-Other similar extensions choose to enable bit 38 of `MSR_IA32_MISC_ENABLE`, but this also disables speed step causing the CPU to run at a higher frequency (and drain battery faster) than necessary.
+There are some alternatives that enables bit 32 of `MSR_IA32_PERF_CTL`, but that didn't seem to have any impact on my system.
 
 Take a look in the [manual](http://www.intel.com/content/www/us/en/processors/architectures-software-developer-manuals.html) for more info.
 
@@ -42,4 +44,4 @@ It will output something about invalid signatures, but the extension might still
 
 ## Credits
 
-The code was written by Vegard Løkken with great inspiration from [nanoant/DisableTurboBoost.kext](https://github.com/nanoant/DisableTurboBoost.kext) and [pyrovski/powertools](https://github.com/pyrovski/powertools).
+The code was based on an outdated repo [nanoant/DisableTurboBoost.kext](https://github.com/nanoant/DisableTurboBoost.kext).

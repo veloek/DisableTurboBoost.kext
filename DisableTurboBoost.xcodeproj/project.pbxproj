@@ -250,7 +250,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				INFOPLIST_FILE = DisableTurboBoost/Info.plist;
+				MARKETING_VERSION = 1.1;
 				MODULE_NAME = no.vtek.DisableTurboBoost;
 				MODULE_START = DisableTurboBoost_start;
 				MODULE_STOP = DisableTurboBoost_stop;
@@ -265,7 +267,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				INFOPLIST_FILE = DisableTurboBoost/Info.plist;
+				MARKETING_VERSION = 1.1;
 				MODULE_NAME = no.vtek.DisableTurboBoost;
 				MODULE_START = DisableTurboBoost_start;
 				MODULE_STOP = DisableTurboBoost_stop;

@@ -25,31 +25,28 @@ extern void mp_rendezvous_no_intrs(
         void (*action_func)(void *),
         void *arg);
 
-const uint64_t disableTurboBoost = ((uint64_t)1) << 32;
+const uint64_t disableTurboBoost = ((uint64_t)1) << 38;
 
 void disable_tb(__unused void * param_not_used) {
-    wrmsr64(MSR_IA32_PERF_CTL, rdmsr64(MSR_IA32_PERF_CTL) | disableTurboBoost);
+    wrmsr64(MSR_IA32_MISC_ENABLE, rdmsr64(MSR_IA32_MISC_ENABLE) | disableTurboBoost);
 }
 
 void enable_tb(__unused void * param_not_used) {
-    wrmsr64(MSR_IA32_PERF_CTL, rdmsr64(MSR_IA32_PERF_CTL) & ~disableTurboBoost);
+    wrmsr64(MSR_IA32_MISC_ENABLE, rdmsr64(MSR_IA32_MISC_ENABLE) & ~disableTurboBoost);
 }
-
-kern_return_t DisableTurboBoost_start(kmod_info_t * ki, void *d);
-kern_return_t DisableTurboBoost_stop(kmod_info_t *ki, void *d);
 
 kern_return_t DisableTurboBoost_start(kmod_info_t * ki, void *d)
 {
-    uint64_t prev = rdmsr64(MSR_IA32_PERF_CTL);
+    uint64_t prev = rdmsr64(MSR_IA32_MISC_ENABLE);
     mp_rendezvous_no_intrs(disable_tb, NULL);
-    printf("Disabled Turbo Boost: %llx -> %llx\n", prev, rdmsr64(MSR_IA32_PERF_CTL));
+    printf("Disabled Turbo Boost: %llx -> %llx\n", prev, rdmsr64(MSR_IA32_MISC_ENABLE));
     return KERN_SUCCESS;
 }
 
 kern_return_t DisableTurboBoost_stop(kmod_info_t *ki, void *d)
 {
-    uint64_t prev = rdmsr64(MSR_IA32_PERF_CTL);
+    uint64_t prev = rdmsr64(MSR_IA32_MISC_ENABLE);
     mp_rendezvous_no_intrs(enable_tb, NULL);
-    printf("Re-enabled Turbo Boost: %llx -> %llx\n", prev, rdmsr64(MSR_IA32_PERF_CTL));
+    printf("Re-enabled Turbo Boost: %llx -> %llx\n", prev, rdmsr64(MSR_IA32_MISC_ENABLE));
     return KERN_SUCCESS;
 }
